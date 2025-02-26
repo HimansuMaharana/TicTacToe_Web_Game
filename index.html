@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tic Tac Toe - Purple Glow</title>
+<style>
+/* General body styling with animated gradient background */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  color: #fff;
+  background: linear-gradient(45deg, #8000ff, #6a00ff, #000000, #bf00ff);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+/* Background gradient animation */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Game layout and styling */
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Instruction and scoreboard column styling */
+.instruction-column, .score-board {
+  width: 200px;
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+  margin: 10px;
+  background: linear-gradient(135deg, #222, #1a1a1a);
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(150, 0, 255, 0.2);
+}
+
+/* Board styling with grid layout */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  grid-gap: 10px;
+  background: linear-gradient(135deg, #222, #1a1a1a);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(150, 0, 255, 0.3);
+  margin: 10px;
+}
+
+/* Individual cell styling */
+.cell {
+  width: 120px;
+  height: 120px;
+  border: 2px solid #9600ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3em;
+  cursor: pointer;
+  background-color: #330066;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  color: #fff;
+  text-shadow: 0 0 10px #9600ff;
+}
+
+/* Hover effect on cells */
+.cell:hover {
+  box-shadow: 0 0 15px #9600ff;
+  background-color: #440088;
+}
+
+/* Message display styling */
+#message {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 2em;
+  color: #fff;
+  cursor: pointer;
+  text-shadow: 0 0 10px #9600ff;
+}
+
+#message:hover { color: #cc99ff; }
+
+/* Reset button styling */
+#resetButton {
+  padding: 10px 20px;
+  background-color: #9600ff;
+  color: #111;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+#resetButton:hover { background-color: #cc99ff; }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+  <!-- Instruction Column -->
+  <div class="instruction-column">
+    <h2>Instructions</h2>
+    <p>Click on a cell to place your mark.</p>
+    <p>Get three in a row to win!</p>
+    <p>Click the reset button or win/draw message to start again.</p>
+  </div>
+
+  <!-- Tic Tac Toe Board -->
+  <div class="board" id="board">
+    <div class="cell" data-index="0"></div>
+    <div class="cell" data-index="1"></div>
+    <div class="cell" data-index="2"></div>
+    <div class="cell" data-index="3"></div>
+    <div class="cell" data-index="4"></div>
+    <div class="cell" data-index="5"></div>
+    <div class="cell" data-index="6"></div>
+    <div class="cell" data-index="7"></div>
+    <div class="cell" data-index="8"></div>
+  </div>
+
+  <!-- Scoreboard -->
+  <div class="score-board">
+    <div class="score">X: <span id="xScore">0</span></div>
+    <div class="score">O: <span id="oScore">0</span></div>
+    <div id="message"></div>
+    <button id="resetButton">Reset Game</button>
+  </div>
+</div>
+
+<script>
+// Selecting elements
+const board = document.getElementById('board');
+const cells = document.querySelectorAll('.cell');
+const message = document.getElementById('message');
+const xScoreDisplay = document.getElementById('xScore');
+const oScoreDisplay = document.getElementById('oScore');
+const resetButton = document.getElementById('resetButton');
+
+// Game state variables
+let currentPlayer = 'X';
+let gameBoard = ['', '', '', '', '', '', '', '', ''];
+let gameActive = true;
+let xScore = 0;
+let oScore = 0;
+
+// Winning combinations
+const winningCombinations = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+];
+
+// Handle cell click
+function handleCellClick(e) {
+  const cell = e.target;
+  const index = cell.dataset.index;
+
+  if (gameBoard[index] === '' && gameActive) {
+    gameBoard[index] = currentPlayer;
+    cell.textContent = currentPlayer;
+
+    if (checkWin()) {
+      message.textContent = `${currentPlayer} wins!`;
+      updateScore(currentPlayer);
+      gameActive = false;
+    } else if (checkDraw()) {
+      message.textContent = 'It\'s a draw!';
+      gameActive = false;
+    } else {
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    }
+  }
+}
+
+// Check for win
+function checkWin() {
+  return winningCombinations.some(combination => {
+    const [a, b, c] = combination;
+    return gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c];
+  });
+}
+
+// Check for draw
+function checkDraw() {
+  return !gameBoard.includes('') && gameActive;
+}
+
+// Update score
+function updateScore(player) {
+  if (player === 'X') xScoreDisplay.textContent = ++xScore;
+  else oScoreDisplay.textContent = ++oScore;
+}
+
+// Reset game
+function resetGame() {
+  gameBoard.fill('');
+  gameActive = true;
+  currentPlayer = 'X';
+  message.textContent = '';
+  cells.forEach(cell => cell.textContent = '');
+}
+
+// Event listeners
+cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+resetButton.addEventListener('click', resetGame);
+message.addEventListener('click', resetGame);
+</script>
+</body>
+</html>

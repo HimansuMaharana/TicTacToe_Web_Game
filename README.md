@@ -13,6 +13,6 @@ A stylish, animated Tic Tac Toe game with a glowing purple theme. Built with **H
 - ⚡ **Responsive & Smooth Animations** – Works on all screen sizes.
 
 ## 📜 Instructions
-1. Click on a cell to place your mark (X or O).
-2. The first player to get three in a row wins.
-3. Click the **Reset Game** button or the **Win/Draw message** to restart.
+- Click on a cell to place your mark (X or O).
+- The first player to get three in a row wins.
+- Click the **Reset Game** button or the **Win/Draw message** to restart.

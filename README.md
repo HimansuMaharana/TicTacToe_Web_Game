@@ -4,7 +4,6 @@ A stylish, animated Tic Tac Toe game with a glowing purple theme. Built with **H
 
 ## 🖼️ Preview
 ![Tic Tac Toe Screenshot](tictactoe.png)  
-*(Add a screenshot of your game here.)*
 
 ## 🚀 Features
 - 🎮 **Interactive Gameplay** – Click on a cell to place your mark (X or O).

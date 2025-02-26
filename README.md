@@ -1,4 +1,4 @@
-# 🎮 Tic Tac Toe - Purple Glow
+# Tic Tac Toe - Purple Glow
 
 A stylish, animated Tic Tac Toe game with a glowing purple theme. Built with **HTML, CSS, and JavaScript**, this game provides an engaging user experience with smooth transitions, score tracking, and a responsive design.
 
